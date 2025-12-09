@@ -6,11 +6,11 @@ import { normalizeTypeName } from "./normalize-type-name";
 import { Root, Element as XMLElement, Text as XMLText } from "xast";
 
 /**
- * UnifiedJs plugin that renames all references to make sure they start with the word `Element`
+ * UnifiedJs plugin that renames all references to make sure they start with prefix
  * and that they are valid TypeScript type names.
  */
-export const renameRefsPlugin: Plugin<never[], NGSimpRoot, NGSimpRoot> =
-    function () {
+export const renameRefsPlugin: (prefix: string) => Plugin<never[], NGSimpRoot, NGSimpRoot> = function (prefix) {
+    return function () {
         return (tree) => {
             // Compute what all the existing ref names are and what they should be renamed to
             const refNames: Record<string, string> = {};
@@ -23,8 +23,8 @@ export const renameRefsPlugin: Plugin<never[], NGSimpRoot, NGSimpRoot> =
             // We iterate over keys instead of doing a `for in` loop because we mutate
             // `refNames` in the loop.
             for (const name of Object.keys(refNames)) {
-                if (!name.startsWith("Element")) {
-                    let newName = normalizeTypeName(name, "Element");
+                if (!name.startsWith(prefix)) {
+                    let newName = normalizeTypeName(name, prefix);
                     if (refNames[newName]) {
                         // We need to search for an unused name
                         let i = 2;
@@ -52,7 +52,7 @@ export const renameRefsPlugin: Plugin<never[], NGSimpRoot, NGSimpRoot> =
                     } else {
                         const newName = normalizeTypeName(
                             node.attributes.name!,
-                            "Element"
+                            prefix
                         );
                         console.warn(
                             `Found <ref name="${node.attributes.name}" /> reference, but did not find a corresponding <define>; renaming to "${newName}"`
@@ -66,4 +66,5 @@ export const renameRefsPlugin: Plugin<never[], NGSimpRoot, NGSimpRoot> =
             });
             return tree;
         };
-    };
+    }
+};

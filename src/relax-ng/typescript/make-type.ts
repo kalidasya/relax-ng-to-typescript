@@ -40,9 +40,9 @@ function quoteAttributeIfNeeded(attr: string): string {
  * `refName` is supplied, it will be used as the type name. Otherwise the element name
  * will be used.
  */
-export function makeElementType(desc: ElementTypeDescriptor, refName?: string) {
+export function makeElementType(desc: ElementTypeDescriptor, refName: string, prefix: string) {
     const hasAttributes = Object.keys(desc.attributes).length > 0;
-    const name = refName ? refName : normalizeTypeName(desc.name, "Element");
+    const name = refName ? refName : normalizeTypeName(desc.name, prefix);
 
     const ret: string[] = [];
 
@@ -104,7 +104,7 @@ export type JSONGrammarItem =
  * Output all types specified by the grammar in both TypeScript
  * form and JSON form.
  */
-export function makeTypesForGrammar(grammar: NGSimpGrammar): {
+export function makeTypesForGrammar(grammar: NGSimpGrammar, prefix: string): {
     typescriptStr: string;
     grammar: JSONGrammar;
 } {
@@ -116,7 +116,7 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
     try {
         expected(startRef, "ref");
     } catch {
-        startRefs = findAllElementRefInChoices(startRef as any, "ElementTei");  // TODO why is this hardcoded?
+        startRefs = findAllElementRefInChoices(startRef as any, prefix);  // TODO why is this hardcoded?
         // startRef = findElementRefInChoices(startRef as any, "");  // TODO why is this hardcoded?
         // expected(startRef, "ref");
     }
@@ -153,7 +153,7 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
         //}
         const elm = ref.children[0];
         const typeDesc = extractElementType(elm);
-        const { typeStr, dependsOn } = makeElementType(typeDesc, refName);
+        const { typeStr, dependsOn } = makeElementType(typeDesc, refName, prefix);
         interfaces.push(typeStr);
         queue.push(...dependsOn);
         exportedRefs[refName] = typeDesc;

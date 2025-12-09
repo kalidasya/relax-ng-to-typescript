@@ -38,18 +38,27 @@ const argv = yargs(process.argv.slice(2))
         description: "Directory to output generated typescript file(s)",
         required: true,
     })
+    .option("prefix", {
+        alias: "p",
+        type: "string",
+        description: "Prefix to use for all types",
+        required: true,
+    })
     .help()
     .alias("help", "h").argv;
 
-async function main(grammarFile: string, outDir: string) {
+async function main(grammarFile: string, outDir: string, prefix: string) {
     const processor = unifiedXml()
         .use(removePositionPlugin)
         .use(doSimplificationPlugin);
     origLog(chalk.red("Reading grammar from", grammarFile));
+    if (prefix && !prefix.endsWith("_")) {
+        prefix = prefix + "_"
+    }
     const source = await fs.readFile(grammarFile, "utf-8");
     const parsed = processor.parse(source);
     let ast = processor.runSync(parsed as any as Root);
-    ast = unifiedXml().use(renameRefsPlugin).runSync(ast);
+    ast = unifiedXml().use(renameRefsPlugin(prefix)).runSync(ast);
 
     // Write out the intermediate (simplified) XML
     const formattedXml = await Prettier.format(toXml(ast as any as Root), {
@@ -60,7 +69,7 @@ async function main(grammarFile: string, outDir: string) {
     origLog(chalk.red("Writing simplified grammar to", xmlOutFile));
     await fs.writeFile(xmlOutFile, formattedXml, "utf-8");
 
-    const grammarTypes = makeTypesForGrammar(ast.children[0]);
+    const grammarTypes = makeTypesForGrammar(ast.children[0], prefix);
 
     // Generate types
     const tsOutFile = path.join(outDir, "generated-types.ts");
@@ -81,5 +90,5 @@ async function main(grammarFile: string, outDir: string) {
 
 (async () => {
     const args = await argv;
-    await main(args.grammar, args["out-dir"]);
+    await main(args.grammar, args["out-dir"], args.prefix);
 })();

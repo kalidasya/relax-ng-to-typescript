@@ -19,9 +19,5 @@ function clearAndUpper(text: string) {
 export function normalizeTypeName(name: string, prefix = ""): string {
     let ret = toPascalCase(name);
     ret = ret.replace(/[^a-zA-Z0-9_]/g, "");
-    if (ret.charAt(0).match(/[0-9]/)) {
-        ret = "_" + ret;
-    }
-
     return prefix + ret;
 }
