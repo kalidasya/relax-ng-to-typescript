@@ -68,9 +68,9 @@ export const rule12: Plugin<void[], Root, Root> = function () {
                 case "interleave":
                     const wrapResult = ensureChildrenArePairs(node, node.name);
                     if (wrapResult.shouldUnwrap) {
-                        // There is only one child. Its contents should replace itself
-                        console.warn("not implemented yet");
+                        node = node.children[0] as Element
                     }
+                    return;
                 case "element":
                     if (node.children.length < 2) {
                         console.warn(

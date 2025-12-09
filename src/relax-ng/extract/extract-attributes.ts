@@ -24,11 +24,14 @@ function extractAttributeType(
         case "data":
         case "text":
             return [...accumulatedTypes, "string"];
+        case "list":
+        case "oneOrMore":
+        case "group":
         case "choice":
-            return [
+            return Array.from(new Set([
                 ...accumulatedTypes,
                 ...elm.children.flatMap((n) => extractAttributeType(n)),
-            ];
+            ]));
         case "empty":
             return accumulatedTypes;
         case "value":
@@ -60,7 +63,7 @@ export function extractAttributes(elm: NGSimpElement) {
         // If there is a choice in the `parents` that means this attribute is not always present!
         const optional = parents.some((x) => x.name === "choice");
         const type = extractAttributeType((node as any).children[1]);
-        attributes[name] = { optional, type };
+        attributes[name||""] = { optional, type }; // TODO 
     });
 
     return attributes;

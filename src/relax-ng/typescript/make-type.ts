@@ -54,13 +54,15 @@ export function makeElementType(desc: ElementTypeDescriptor, refName?: string) {
         );
     }
     ret.push(`  name: ${JSON.stringify(desc.name)};`);
-    if (hasAttributes) {
+    if (desc.anyAttributes) {
+        ret.push(`  attributes: any`);
+    }
+    else if (hasAttributes) {
         ret.push(`  attributes: {`);
         ret.push(
             ...Object.entries(desc.attributes).map(
                 ([attr, attrDesc]) =>
-                    `    ${quoteAttributeIfNeeded(attr)}${
-                        attrDesc.optional ? "?" : ""
+                    `    ${quoteAttributeIfNeeded(attr)}${attrDesc.optional ? "?" : ""
                     }: ${attrDesc.type.join(" | ")};`
             )
         );
@@ -109,13 +111,16 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
     const start = grammar.children[0];
     const allDefs = grammar.children.slice(1) as NGSimpDefine[];
     let startRef = start.children[0];
+    let startRefs:NGSimpRef[] = [];
     //console.log(start.children);
     try {
         expected(startRef, "ref");
     } catch {
-        startRef = findElementRefInChoices(startRef as any, "ElementPretext");
-        expected(startRef, "ref");
+        startRefs = findAllElementRefInChoices(startRef as any, "ElementTei");  // TODO why is this hardcoded?
+        // startRef = findElementRefInChoices(startRef as any, "");  // TODO why is this hardcoded?
+        // expected(startRef, "ref");
     }
+    const startRefNames = startRefs ? startRefs.map((e) => e.attributes.name) : [(startRef as NGSimpRef).attributes.name]
 
     const allDefsMap: Record<string, NGSimpDefine> = Object.fromEntries(
         allDefs.map((def) => [def.attributes.name, def])
@@ -127,9 +132,9 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
     };
 
     const interfaces: string[] = [
-        `type StartElement = ${startRef.attributes.name};`,
+        `type StartElement = ${startRefNames.join(" | ")};`,
     ];
-    const queue: string[] = [startRef.attributes.name];
+    const queue: string[] = startRefNames;
     // Recursively export all the types that are needed
     while (queue.length > 0) {
         const refName = queue.pop() || "";
@@ -163,7 +168,7 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
             TYPES_PREAMBLE +
             "\n\n" +
             interfaces.map((i) => `export ${i}`).join("\n\n"),
-        grammar: { startType: startRef.attributes.name, refs: exportedRefs },
+        grammar: { startType: (startRef as NGSimpRef).attributes.name, refs: exportedRefs },
     };
 }
 
@@ -173,6 +178,26 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
  */
 function generateTypeForMissingRef(typeName: string): string {
     return `type ${typeName} = unknown;`;
+}
+
+/**
+ * Drill down a `<choice>...</choice>` blocks and find all ref
+ * whose initial pattern matches the given `namePrefix`.
+ */
+function findAllElementRefInChoices(elm: NGMethod, namePrefix: string): NGSimpRef[] {
+    const allFlatRefs: NGSimpRef[] = [];
+    visit(elm as any, "element", (el) => {
+        if (el.name === "ref") allFlatRefs.push(el);
+    });
+
+    const ret = allFlatRefs.filter((ref) =>
+        ref.attributes.name.startsWith(namePrefix)
+    );
+
+    if (ret) {
+        return ret;
+    }
+    throw new Error(`Could not find ref with prefix ${namePrefix}`);
 }
 
 /**

@@ -46,5 +46,9 @@
     },
     "prettier": {
         "tabWidth": 4
+    },
+    "devDependencies": {
+        "@types/node": "^24.10.1",
+        "@types/yargs": "^17.0.35"
     }
 }

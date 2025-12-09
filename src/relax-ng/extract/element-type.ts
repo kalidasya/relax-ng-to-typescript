@@ -29,10 +29,11 @@ export function extractElementType(elm: NGSimpElement) {
 
     return {
         type: "element",
-        name,
+        name: name || "",
         attributes,
         children,
         textChildrenAllowed: textChildren,
+        anyAttributes: name === undefined
     };
 }
 

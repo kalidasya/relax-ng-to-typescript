@@ -92,11 +92,14 @@ export const rule19: Plugin<void[], Root, Root> = function () {
                         `Detected infinite loop when trying to expand ref name="${refName}"`
                     );
                 }
-                haveVisited.add(node);
+                // this will fail because we revisit nodes at the moment to expand all childrens (any level deep nested and refered definitions)
+                // haveVisited.add(node);
 
                 parent.children = parent.children.flatMap((n) =>
                     n === node ? expandableDefs[refName].children : n
                 );
+                // as we changed the children we need to start over to expand anything needs expanding
+                return 0;
             }
         );
 

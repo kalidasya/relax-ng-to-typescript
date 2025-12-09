@@ -72,6 +72,7 @@ describe("relax-ng-extract", () => {
             name: "element",
         });
         expect(extractElementType(ol!)).toEqual({
+            anyAttributes: false,
             name: "ol",
             type: "element",
             attributes: {

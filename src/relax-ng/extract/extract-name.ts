@@ -14,10 +14,11 @@ export function extractName(
     switch (nameNode.name) {
         case "choice":
         case "nsName":
-        case "anyName":
             throw new Error(
                 `Extracting a name from a <${nameNode.name}> element is not supported`
             );
+        case "anyName":
+            return undefined
         case "name":
             return toString(nameNode);
     }
