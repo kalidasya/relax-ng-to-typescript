@@ -85,13 +85,12 @@ export function expected<T extends string>(
                 expectedTagName.includes(elm.name))
         )
     ) {
-        const { children, ...rest } = elm;
         throw new Error(
             `Expected tag name \`${
                 Array.isArray(expectedTagName)
                     ? expectedTagName.join("/")
                     : expectedTagName
-            }\` but found element ${JSON.stringify(rest)}`
+            }\` but found element ${elm.name}`
         );
     }
 }

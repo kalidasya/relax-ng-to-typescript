@@ -2,11 +2,12 @@ import { NGSimpElement } from "../simplification/simplified-types";
 import { extractAttributes } from "./extract-attributes";
 import { extractRefs, textChildrenAllowed } from "./extract-children";
 import { extractName } from "./extract-name";
+import { normalizeTypeName } from "../typescript/normalize-type-name"
 
-let i=0;
+const XML_ELM = { ref: "XMLText" };
 
-export function extractElementType(elm: NGSimpElement) {
-    const name = extractName(elm);
+export function extractElementType(elm: NGSimpElement, refName: string, prefix: string) {
+    const name = extractName(elm) || "";
     const attributes = extractAttributes(elm);
     let children = extractRefs(elm.children[1]).map((ref) => ({
         ref: ref.attributes.name,
@@ -23,17 +24,18 @@ export function extractElementType(elm: NGSimpElement) {
     });
 
     const textChildren = textChildrenAllowed(elm.children[1]);
-    //if (name === "ElementAuthor" || name === "author") {
-    //    console.log(i++,elm)
-    //}
-
+    if (textChildren) {
+        children.push(XML_ELM);
+    }
     return {
         type: "element",
-        name: name || "",
+        name: name,
+        refName: refName ? refName : normalizeTypeName(name, prefix),
         attributes,
         children,
         textChildrenAllowed: textChildren,
-        anyAttributes: name === undefined
+        anyAttributes: name === "anyName",
+        hasAttributes: Object.keys(attributes).length > 0,
     };
 }
 

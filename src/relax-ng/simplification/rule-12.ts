@@ -66,30 +66,34 @@ export const rule12: Plugin<void[], Root, Root> = function () {
                 case "choice":
                 case "group":
                 case "interleave":
-                    const wrapResult = ensureChildrenArePairs(node, node.name);
-                    if (wrapResult.shouldUnwrap) {
-                        node = node.children[0] as Element
+                    {
+                        const wrapResult = ensureChildrenArePairs(node, node.name);
+                        if (wrapResult.shouldUnwrap) {
+                            node = node.children[0] as Element
+                        }
+                        return;
                     }
-                    return;
                 case "element":
-                    if (node.children.length < 2) {
-                        console.warn(
-                            `Expected <element ...> to have at least 2 children but found ${node.children.length}`
+                    {
+                        if (node.children.length < 2) {
+                            console.warn(
+                                `Expected <element ...> to have at least 2 children but found ${node.children.length}`
+                            );
+                            return;
+                        }
+                        if (node.children.length === 2) {
+                            return;
+                        }
+                        const remainingChildren = x(
+                            "group",
+                            node.children.slice(1)
                         );
-                        return;
+                        ensureChildrenArePairs(
+                            remainingChildren,
+                            remainingChildren.name
+                        );
+                        node.children = [node.children[0], remainingChildren];
                     }
-                    if (node.children.length === 2) {
-                        return;
-                    }
-                    const remainingChildren = x(
-                        "group",
-                        node.children.slice(1)
-                    );
-                    ensureChildrenArePairs(
-                        remainingChildren,
-                        remainingChildren.name
-                    );
-                    node.children = [node.children[0], remainingChildren];
             }
         });
     };

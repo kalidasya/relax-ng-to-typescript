@@ -9,7 +9,7 @@ import {
  */
 export function extractName(
     elm: (NGSimpPattern | NGSimpElement) & { name: "attribute" | "element" }
-) {
+): string | "anyName" {
     const nameNode = elm.children[0];
     switch (nameNode.name) {
         case "choice":
@@ -18,7 +18,7 @@ export function extractName(
                 `Extracting a name from a <${nameNode.name}> element is not supported`
             );
         case "anyName":
-            return undefined
+            return "anyName"
         case "name":
             return toString(nameNode);
     }

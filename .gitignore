@@ -5,3 +5,5 @@ simp
 pretext.rng
 node_modules
 .vscode
+tei_types/
+*.snap

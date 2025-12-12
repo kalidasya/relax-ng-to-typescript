@@ -1,8 +1,7 @@
 import { EXIT, visit } from "unist-util-visit";
 import { Element as XMLElement } from "xast";
-import { elmMatcher, isElement } from "../../xast-utils";
+import { elmMatcher } from "../../xast-utils";
 import {
-    NGSimpNonEmptyPattern,
     NGSimpPattern,
     NGSimpRef,
     NGSimpTop,

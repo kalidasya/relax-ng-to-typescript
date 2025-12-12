@@ -3,13 +3,13 @@ import { visit } from "unist-util-visit";
 import { isElement } from "../../xast-utils";
 import { NGSimpRoot } from "../simplification/simplified-types";
 import { normalizeTypeName } from "./normalize-type-name";
-import { Root, Element as XMLElement, Text as XMLText } from "xast";
+import { Element as XMLElement } from "xast";
 
 /**
  * UnifiedJs plugin that renames all references to make sure they start with prefix
  * and that they are valid TypeScript type names.
  */
-export const renameRefsPlugin: (prefix: string) => Plugin<never[], NGSimpRoot, NGSimpRoot> = function (prefix) {
+export const renameRefsPlugin = function (prefix:string): Plugin<never[], NGSimpRoot, NGSimpRoot> {
     return function () {
         return (tree) => {
             // Compute what all the existing ref names are and what they should be renamed to
@@ -44,7 +44,6 @@ export const renameRefsPlugin: (prefix: string) => Plugin<never[], NGSimpRoot, N
             }
 
             // First thing to do is to rename all refs as their Typescript type names.
-            const usedNames: Set<string> = new Set();
             visit(tree, isElement, (node: XMLElement) => {
                 if (node.name === "ref") {
                     if (refNames[node.attributes.name!]) {
