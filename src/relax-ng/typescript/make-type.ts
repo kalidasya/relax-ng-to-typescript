@@ -1,6 +1,7 @@
 import { visit } from "unist-util-visit";
 import { expected } from "../../xast-utils";
 import {
+    ElementTypeDescriptor,
     extractElementType,
 } from "../extract/element-type";
 import {
@@ -44,7 +45,7 @@ export type JSONGrammar = {
 export type JSONGrammarItem =
     | { type: "text" }
     | { type: "unknown" }
-    | ReturnType<typeof extractElementType>;
+    | ElementTypeDescriptor;
 
 /**
  * Output all types specified by the grammar in both TypeScript
@@ -76,7 +77,7 @@ export async function makeTypesForGrammar(grammar: NGSimpGrammar, prefix: string
     interface Exports {
         prefix: string;
         startElements: string[];
-        refs: ReturnType<typeof extractElementType>[];
+        refs: ElementTypeDescriptor[];
     }
     const exportedTypes: Exports = {
         prefix: prefix,

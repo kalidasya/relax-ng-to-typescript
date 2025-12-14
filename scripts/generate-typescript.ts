@@ -64,7 +64,7 @@ const parser = yargs(process.argv.slice(2))
     .alias("help", "h");
 
 async function main(settings: ReturnType<typeof parser.parseSync>) {
-    const {grammar:grammarFile, outDir, tsFileName, createGrammar} = settings
+    const { grammar: grammarFile, outDir, tsFileName, createGrammar } = settings
     let prefix = settings.prefix
     // outDir: string, 
     // prefix: string
@@ -95,7 +95,10 @@ async function main(settings: ReturnType<typeof parser.parseSync>) {
     // Generate types
     const tsOutFile = path.join(outDir, tsFileName);
     origLog(chalk.red("Writing generated types to", tsOutFile));
-    const tsOut = grammarTypes.typescriptStr;
+    const tsOut = await Prettier.format(grammarTypes.typescriptStr, {
+        trailingComma: "none",
+        parser: "typescript",
+    });
     await fs.writeFile(tsOutFile, tsOut, "utf-8");
 
     // Generate JSON grammar

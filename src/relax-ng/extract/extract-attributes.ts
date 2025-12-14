@@ -18,9 +18,8 @@ function extractData(elm: NGSimpData): string {
         case "Name": // https://www.w3.org/TR/xmlschema-2/#Name
         case "NCName": // https://www.w3.org/TR/xmlschema-2/#NCName
         case "string":
-            return "string"
         case "language":
-            return "XMLLanguage"
+            return "string"
         case "time": // https://www.w3.org/TR/xmlschema-2/#time
         case "date": // https://www.w3.org/TR/xmlschema-2/#date
         case "dateTime": // https://www.w3.org/TR/xmlschema-2/#dateTime
@@ -71,11 +70,17 @@ function extractAttributeType(
         case "empty":
             return accumulatedTypes;
         case "value":
-            return [
-                ...accumulatedTypes,
-                // String literals should be returned as quoted strings so that they can be directly converted to typescript types
-                JSON.stringify(toString(elm)),
-            ];
+            {
+                const val = JSON.stringify(toString(elm))
+                if (val !== '""') {
+                    return [
+                        ...accumulatedTypes,
+                        // String literals should be returned as quoted strings so that they can be directly converted to typescript types
+                        val
+                    ];
+                }
+                return accumulatedTypes
+            }
         case "attribute":
         case "ref":
             throw new Error(`Invalid child of attribute: <${elm.name}>`);

@@ -7,7 +7,7 @@ export interface ElementContentMap {
     cdata: Data;
     comment: Comment;
     element: XMLElement;
-    text: Text;
+    text: string;
 }
 export type ElementContent = ElementContentMap[keyof ElementContentMap];
 export interface Attributes {
@@ -20,18 +20,10 @@ export interface XMLElement  {
     children: ElementContent[];
     data?: Data | undefined;
 }
-export interface Literal extends Node {
-    value: string;
-}
-export interface XMLText extends Literal {
+export interface XMLText {
     type: "text";
-    data?: Data | undefined;
+    data?: string | undefined;
 }
-type RegexMatchedString<Pattern extends string> =
-    `${string & { __brand: Pattern }}`;
-
-type XMLLanguage = RegexMatchedString<"[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*">;
-
 type XMLBoolean = boolean | 1 | 0;
 
 
@@ -48,15 +40,22 @@ export interface {{ref.refName}} extends {% if ref.hasAttributes and not ref.any
     attributes: {[key:string]: any}
     {% elif ref.hasAttributes %}
     attributes : {
-        {% for key, attr in ref.attributes %}
-        {{key|quote}}{% if attr.optional %}?{% endif %}: {{ attr.type | join(" | ") }}
+        {% for key, attr in ref.attributes -%}
+            {{key|quote}}{% if attr.optional %}?{% endif -%}: 
+            {%- for t in attr.type -%}
+                {%-if not loop.first %} | {% endif -%}
+                {%- if loop.length > 1 and t == "string" %} (string & {})
+                    {%- else -%} {{ t }}
+                {%- endif %}
+            {% endfor %}
+            
         {% endfor %}
     };
     {% endif %}
     {% if ref.children|length > 1 %}
     children: ({{ ref.children | getter("ref") | join(" | ")}})[];
     {% elif ref.children|length == 1 %}
-    childern: {{ref.children[0] | getter("ref")}}[];
+    children: {{ref.children[0] | getter("ref")}}[];
     {%- else -%}
     children: never[];
     {%- endif -%}
