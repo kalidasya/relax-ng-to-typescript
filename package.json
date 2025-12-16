@@ -9,6 +9,7 @@
         "type": "git",
         "url": "https://github.com/siefkenj/relax-ng-to-typescript"
     },
+    "files":["**/*.njk"],
     "bin": {
         "rng-to-ts": "scripts\\generate-typescript.ts"
     },
