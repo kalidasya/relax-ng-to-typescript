@@ -1,12 +1,11 @@
 import { describe, it, expect } from "vitest";
 import util from "node:util";
 import Prettier from "prettier";
-import { unifiedXml } from "./utils";
-import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin";
-import { removePositionPlugin } from "../src/xast-utils";
+import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin.ts";
+import { unifiedXml, removePositionPlugin } from "../src/xast-utils.ts";
 import { find } from "unist-util-find";
-import { extractElementType } from "../src/relax-ng/extract/element-type";
-import { NGSimpElement } from "../src/relax-ng/simplification/simplified-types";
+import { extractElementType } from "../src/relax-ng/extract/element-type.ts";
+import type { NGSimpElement } from "../src/relax-ng/simplification/simplified-types.ts";
 import type { Root } from "xast";
 
 // Make console.log pretty-print by default

@@ -1,7 +1,8 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
-import { Root, Element } from "xast";
-import { elmMatcher, TypeGuard } from "../../xast-utils";
+import type { Root, Element } from "xast";
+import { elmMatcher  } from "../../xast-utils.ts";
+import type { TypeGuard  } from "../../xast-utils.ts";
 
 function isNotWhitespace(c: Root["children"][number]): boolean {
     if (c.type === "text" && c.value.trim() === "") {

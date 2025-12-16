@@ -1,11 +1,11 @@
 import { EXIT, visit } from "unist-util-visit";
-import { Element as XMLElement } from "xast";
-import { elmMatcher } from "../../xast-utils";
-import {
+import type { Element as XMLElement } from "xast";
+import { elmMatcher } from "../../xast-utils.ts";
+import type {
     NGSimpPattern,
     NGSimpRef,
     NGSimpTop,
-} from "../simplification/simplified-types";
+} from "../simplification/simplified-types.ts";
 
 /**
  * List all children of `elm` that are `NGSimpRef`s.

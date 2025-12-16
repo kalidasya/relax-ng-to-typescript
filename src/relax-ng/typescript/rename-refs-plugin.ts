@@ -1,9 +1,9 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
-import { isElement } from "../../xast-utils";
-import { NGSimpRoot } from "../simplification/simplified-types";
-import { normalizeTypeName } from "./normalize-type-name";
-import { Element as XMLElement } from "xast";
+import { isElement } from "../../xast-utils.ts";
+import type { NGSimpRoot } from "../simplification/simplified-types.ts";
+import { normalizeTypeName } from "./normalize-type-name.ts";
+import type { Element as XMLElement } from "xast";
 
 /**
  * UnifiedJs plugin that renames all references to make sure they start with prefix

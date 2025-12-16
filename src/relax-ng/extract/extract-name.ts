@@ -1,8 +1,8 @@
 import { toString } from "xast-util-to-string";
-import {
+import type {
     NGSimpElement,
     NGSimpPattern,
-} from "../simplification/simplified-types";
+} from "../simplification/simplified-types.ts";
 
 /**
  * Extract the name from an `<attribute>` or `<element>` tag.

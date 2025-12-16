@@ -1,9 +1,10 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
-import { Root, Element } from "xast";
+import type { Root, Element } from "xast";
 import { x } from "xastscript";
-import { elmMatcher, isElement, TypeGuard } from "../../xast-utils";
-import { ensureChildrenArePairs } from "./utils";
+import { elmMatcher, isElement } from "../../xast-utils.ts";
+import type { TypeGuard } from "../../xast-utils.ts";
+import { ensureChildrenArePairs } from "./utils.ts";
 
 /**
  * For each grammar element, all define elements with the same name are combined together.

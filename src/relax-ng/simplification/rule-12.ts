@@ -1,9 +1,9 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
-import { Root, Element } from "xast";
+import type { Root, Element } from "xast";
 import { x } from "xastscript";
-import { isElement } from "../../xast-utils";
-import { ensureChildrenArePairs } from "./utils";
+import { isElement } from "../../xast-utils.ts";
+import { ensureChildrenArePairs } from "./utils.ts";
 
 /**
  * Simplification steps from https://relaxng.org/spec-20011203.html

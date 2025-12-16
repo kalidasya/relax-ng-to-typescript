@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * Create TypeScript files for a RELAX-NG grammar.
  *
@@ -12,11 +13,10 @@ import path from "node:path";
 import yargs from "yargs/yargs";
 import { toXml } from "xast-util-to-xml";
 import Prettier from "prettier";
-import { removePositionPlugin } from "../src";
-import { doSimplificationPlugin } from "../src";
-import { makeTypesForGrammar } from "../src";
-import { unifiedXml } from "../tests/utils";
-import { renameRefsPlugin } from "../src";
+import { removePositionPlugin, unifiedXml } from "../src/xast-utils.ts";
+import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin.ts";
+import { makeTypesForGrammar } from "../src/relax-ng/typescript/make-type.ts";
+import { renameRefsPlugin } from "../src/relax-ng/typescript/rename-refs-plugin.ts";
 import chalk from "chalk";
 import type { Root } from "xast";
 

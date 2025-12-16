@@ -1,18 +1,20 @@
 import { visit } from "unist-util-visit";
-import { expected } from "../../xast-utils";
+import { expected } from "../../xast-utils.ts";
 import {
-    ElementTypeDescriptor,
     extractElementType,
-} from "../extract/element-type";
-import {
+} from "../extract/element-type.ts";
+import type {
+    ElementTypeDescriptor,
+} from "../extract/element-type.ts";
+import type {
     NGSimpDefine,
     NGSimpGrammar,
     NGSimpRef,
-} from "../simplification/simplified-types";
-import { normalizeTypeName } from "./normalize-type-name";
-import { NGMethod } from "../types";
+} from "../simplification/simplified-types.ts";
+import { normalizeTypeName } from "./normalize-type-name.ts";
+import type { NGMethod } from "../types.ts";
 import nunjucks from "nunjucks"
-import { toPascalCase } from "./normalize-type-name"
+import { toPascalCase } from "./normalize-type-name.ts"
 
 
 // Basic XML element names

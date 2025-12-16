@@ -1,8 +1,8 @@
-import { Plugin, Transformer } from "unified";
+import type { Plugin, Transformer } from "unified";
 import { EXIT, visit } from "unist-util-visit";
-import { Root } from "xast";
-import { elmMatcher, expected } from "../xast-utils";
-import { NGGrammar } from "./types";
+import type { Root } from "xast";
+import { elmMatcher, expected } from "../xast-utils.ts";
+import { NGGrammar } from "./types.ts";
 import {
     NGSimpGrammar,
 } from "./simplification/simplified-types";

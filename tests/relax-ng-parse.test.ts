@@ -1,10 +1,9 @@
 import { describe, it } from "vitest";
 import fs from "node:fs/promises";
 import util from "node:util";
-import { unifiedXml } from "./utils";
-import { removePositionPlugin } from "../src/xast-utils";
-import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin";
-import { makeTypesForGrammar } from "../src/relax-ng/typescript/make-type";
+import { unifiedXml, removePositionPlugin } from "../src/xast-utils.ts";
+import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin.ts";
+import { makeTypesForGrammar } from "../src/relax-ng/typescript/make-type.ts";
 import type { Root } from "xast";
 
 // Make console.log pretty-print by default

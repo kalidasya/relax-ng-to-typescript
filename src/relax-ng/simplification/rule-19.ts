@@ -1,9 +1,10 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { EXIT, visit } from "unist-util-visit";
-import { Root, Element } from "xast";
+import type { Root, Element } from "xast";
 import { x } from "xastscript";
-import { elmMatcher, isElement, TypeGuard } from "../../xast-utils";
-import { getNormalizedElementName, replaceIn } from "./utils";
+import { elmMatcher, isElement } from "../../xast-utils.ts";
+import type { TypeGuard } from "../../xast-utils.ts";
+import { getNormalizedElementName, replaceIn } from "./utils.ts";
 import Slugger from "github-slugger";
 
 type DefineElement = Element & { name: "define"; attributes: { name: string } };

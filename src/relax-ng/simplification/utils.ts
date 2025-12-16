@@ -1,7 +1,7 @@
-import { Element, Root } from "xast";
+import type { Element, Root } from "xast";
 import { toString } from "xast-util-to-string";
 import { x } from "xastscript";
-import { isElement, expected } from "../../xast-utils";
+import { isElement, expected } from "../../xast-utils.ts";
 
 type XastChild = Root["children"][number];
 

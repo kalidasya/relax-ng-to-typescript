@@ -1,13 +1,13 @@
 import { visitParents } from "unist-util-visit-parents";
 import { toString } from "xast-util-to-string";
-import { elmMatcher, expected } from "../../xast-utils";
-import {
+import { elmMatcher, expected } from "../../xast-utils.ts";
+import type {
     NGSimpElement,
     NGSimpPattern,
     NGSimpData,
-} from "../simplification/simplified-types";
-import { extractName } from "./extract-name";
-import { Element as XMLElement } from "xast";
+} from "../simplification/simplified-types.ts";
+import { extractName } from "./extract-name.ts";
+import type { Element as XMLElement } from "xast";
 
 
 function extractData(elm: NGSimpData): string {

@@ -1,8 +1,8 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { remove } from "unist-util-remove";
 import type { Test } from "unist-util-is";
 import type { Root } from "xast";
-import { NG_XML_NODES } from "../types";
+import { NG_XML_NODES } from "../types.ts";
 
 /**
  * Simplification steps from https://relaxng.org/spec-20011203.html

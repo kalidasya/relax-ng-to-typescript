@@ -1,14 +1,18 @@
-import { Plugin } from "unified";
+import { unified } from "unified";
+import type {Plugin} from "unified"
+import type { Node } from "unified/lib";
 import { convert } from "unist-util-is";
 import { removePosition } from "unist-util-remove-position";
-import { Root, Element as XMLElement, Text as XMLText } from "xast";
+import type { Root, Element as XMLElement, Text as XMLText } from "xast";
+import { fromXml } from "xast-util-from-xml";
+import { toXml } from "xast-util-to-xml";
 
-type Node = Root["children"][number];
+type NodeFromRoot = Root["children"][number] & {value: string};
 
 /**
  * Filter a list of XML nodes to ensure that only elements and text nodes are in the list.
  */
-export function onlyElementsAndText(nodes: Node[]): (XMLElement | XMLText)[] {
+export function onlyElementsAndText(nodes: NodeFromRoot[]): (XMLElement | XMLText)[] {
     return nodes.filter(
         (node) => node.type === "element" || node.type === "text"
     ) as (XMLElement | XMLText)[];
@@ -102,3 +106,18 @@ export const removePositionPlugin: Plugin<void[], Root, Root> = function () {
 };
 
 export type TypeGuard<T> = (a: any) => a is T;
+
+function patchedToXml(tree: Node) : string {
+    return toXml(tree as Node & {value:string, type: "raw"}, null)
+}
+
+export function unifiedXml() {
+    return unified()
+        .use(function () {
+            this.parser = fromXml;
+        })
+        .use(function () {
+            this.compiler = patchedToXml;
+        });
+}
+

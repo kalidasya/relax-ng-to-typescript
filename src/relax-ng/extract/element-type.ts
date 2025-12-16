@@ -1,8 +1,8 @@
-import { NGSimpElement } from "../simplification/simplified-types";
-import { extractAttributes } from "./extract-attributes";
-import { extractRefs, textChildrenAllowed } from "./extract-children";
-import { extractName } from "./extract-name";
-import { normalizeTypeName } from "../typescript/normalize-type-name"
+import type { NGSimpElement } from "../simplification/simplified-types.ts";
+import { extractAttributes } from "./extract-attributes.ts";
+import { extractRefs, textChildrenAllowed } from "./extract-children.ts";
+import { extractName } from "./extract-name.ts";
+import { normalizeTypeName } from "../typescript/normalize-type-name.ts";
 
 const XML_ELM = { ref: "XMLText" };
 

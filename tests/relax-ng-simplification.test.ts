@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import util from "node:util";
 import Prettier from "prettier";
-import { unifiedXml } from "./utils";
+import {unifiedXml} from "../src/xast-utils.ts"
 import {
     rule1,
     rule12,
@@ -9,8 +9,8 @@ import {
     rule4,
     rule8,
 } from "../src/relax-ng/simplification";
-import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin";
-import { renameRefsPlugin } from "../src/relax-ng/typescript/rename-refs-plugin";
+// import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin";
+// import { renameRefsPlugin } from "../src/relax-ng/typescript/rename-refs-plugin";
 
 // Make console.log pretty-print by default
 const origLog = console.log;
