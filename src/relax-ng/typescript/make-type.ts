@@ -1,4 +1,5 @@
 import { visit } from "unist-util-visit";
+import { fileURLToPath } from 'node:url';
 import { expected } from "../../xast-utils.ts";
 import {
     extractElementType,
@@ -15,6 +16,7 @@ import { normalizeTypeName } from "./normalize-type-name.ts";
 import type { NGMethod } from "../types.ts";
 import nunjucks from "nunjucks"
 import { toPascalCase } from "./normalize-type-name.ts"
+import path from "node:path";
 
 
 // Basic XML element names
@@ -108,7 +110,11 @@ export async function makeTypesForGrammar(grammar: NGSimpGrammar, prefix: string
         queue.push(...dependsOn);
         exportedRefs[refName] = typeDesc;
     }
-    const res = env.render('src/relax-ng/typescript/types-template.njk', exportedTypes);
+    
+
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const res = env.render(__dirname+'/types-template.njk', exportedTypes);
     return {
         typescriptStr: res,
         grammar: { startType: (startRef as NGSimpRef).attributes.name, refs: exportedRefs },

@@ -9,7 +9,9 @@
         "type": "git",
         "url": "https://github.com/siefkenj/relax-ng-to-typescript"
     },
-    "files":["**/*.njk"],
+    "files": [
+        "**/*.njk"
+    ],
     "bin": {
         "rng-to-ts": "scripts\\generate-typescript.ts"
     },
@@ -53,16 +55,16 @@
         "@types/xast": "^2.0.4",
         "@types/yargs": "^17.0.35",
         "@vitest/coverage-v8": "^4.0.15",
-        "eslint": "^9.39.2",
         "esbuild-runner": "^2.2.2",
+        "eslint": "^9.39.2",
         "globals": "^16.5.0",
         "jiti": "^2.6.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.9.3",
         "typescript-eslint": "^8.50.0",
+        "vite-plugin-dts": "^4.5.4",
         "vite-plugin-static-copy": "^3.1.4",
         "vite-tsconfig-paths": "^6.0.1",
-        "vite-plugin-dts": "^4.5.4",
         "vitest": "^4.0.15"
     }
 }
