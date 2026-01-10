@@ -1,9 +1,10 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { EXIT, visit } from "unist-util-visit";
-import { Root, Element } from "xast";
+import type { Root, Element } from "xast";
 import { x } from "xastscript";
-import { elmMatcher, isElement, TypeGuard } from "../../xast-utils";
-import { getNormalizedElementName, replaceIn } from "./utils";
+import { elmMatcher, isElement } from "../../xast-utils.ts";
+import type { TypeGuard } from "../../xast-utils.ts";
+import { getNormalizedElementName, replaceIn } from "./utils.ts";
 import Slugger from "github-slugger";
 
 type DefineElement = Element & { name: "define"; attributes: { name: string } };
@@ -92,11 +93,14 @@ export const rule19: Plugin<void[], Root, Root> = function () {
                         `Detected infinite loop when trying to expand ref name="${refName}"`
                     );
                 }
-                haveVisited.add(node);
+                // this will fail because we revisit nodes at the moment to expand all childrens (any level deep nested and refered definitions)
+                // haveVisited.add(node);
 
                 parent.children = parent.children.flatMap((n) =>
                     n === node ? expandableDefs[refName].children : n
                 );
+                // as we changed the children we need to start over to expand anything needs expanding
+                return 0;
             }
         );
 

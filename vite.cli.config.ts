@@ -2,7 +2,11 @@ import { defineConfig } from "vitest/config";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import dts from "vite-plugin-dts";
 import * as path from "node:path";
-import { viteStaticCopy, TransformOption } from "vite-plugin-static-copy";
+import { viteStaticCopy } from "vite-plugin-static-copy";
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+    
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // These are the dependencies that will not be bundled into the library.
 const EXTERNAL_DEPS = [
@@ -91,7 +95,7 @@ function transformPackageJson(contents: string, filePath: string) {
         "./dist/package.json",
     );
     if (Array.isArray(pkg.files)) {
-        pkg.files = pkg.files.map((file) =>
+        pkg.files = pkg.files.map((file: string) =>
             getPathRelativeToPackageJson(file, outputPackageJsonPath),
         );
     }

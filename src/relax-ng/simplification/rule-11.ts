@@ -1,7 +1,8 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
-import { Root, Element } from "xast";
-import { elmMatcher, TypeGuard } from "../../xast-utils";
+import type { Root, Element } from "xast";
+import { elmMatcher } from "../../xast-utils.ts";
+import type { TypeGuard } from "../../xast-utils.ts";
 
 /**
  * Simplification steps from https://relaxng.org/spec-20011203.html

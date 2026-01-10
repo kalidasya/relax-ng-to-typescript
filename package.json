@@ -1,5 +1,5 @@
 {
-    "name": "relax-ng-to-typescript",
+    "name": "rng-to-ts",
     "version": "1.0.0",
     "description": "A TypeScript library for working with Relax NG schemas",
     "main": "index.js",
@@ -9,42 +9,62 @@
         "type": "git",
         "url": "https://github.com/siefkenj/relax-ng-to-typescript"
     },
+    "files": [
+        "**/*.njk"
+    ],
+    "bin": {
+        "rng-to-ts": "scripts\\generate-typescript.ts"
+    },
     "scripts": {
-        "build": "vite build",
+        "build": "npx tsc",
         "test": "vitest",
-        "gen": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/generate-typescript"
+        "start": "ts-node  --experimental-specifier-resolution=node scripts\\generate-typescript.ts",
+        "gen": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/generate-typescript",
+        "lint": "npx eslint ."
     },
     "keywords": [],
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "@prettier/plugin-xml": "^3.4.1",
-        "@types/github-slugger": "^2.0.0",
-        "chalk": "^5.3.0",
-        "esbuild-runner": "^2.2.2",
+        "@prettier/plugin-xml": "^3.4.2",
+        "chalk": "^5.6.2",
         "github-slugger": "^2.0.0",
-        "prettier": "^3.3.3",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.6.3",
+        "nunjucks": "^3.2.4",
+        "prettier": "^3.7.4",
         "unified": "^11.0.5",
         "unist-util-find": "^3.0.0",
-        "unist-util-is": "^6.0.0",
+        "unist-util-is": "^6.0.1",
         "unist-util-remove": "^4.0.0",
         "unist-util-remove-position": "^5.0.0",
         "unist-util-select": "^5.1.0",
         "unist-util-visit": "^5.0.0",
-        "unist-util-visit-parents": "^6.0.1",
-        "vite-plugin-dts": "^4.3.0",
-        "vite-plugin-static-copy": "^2.1.0",
-        "vite-tsconfig-paths": "^5.1.2",
-        "vitest": "^2.1.5",
+        "unist-util-visit-parents": "^6.0.2",
         "xast-util-from-xml": "^4.0.0",
         "xast-util-to-string": "^3.0.0",
         "xast-util-to-xml": "^4.0.0",
         "xastscript": "^4.0.0",
-        "yargs": "^17.7.2"
+        "yargs": "^18.0.0"
     },
     "prettier": {
         "tabWidth": 4
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.2",
+        "@types/node": "^25.0.2",
+        "@types/nunjucks": "^3.2.6",
+        "@types/xast": "^2.0.4",
+        "@types/yargs": "^17.0.35",
+        "@vitest/coverage-v8": "^4.0.15",
+        "esbuild-runner": "^2.2.2",
+        "eslint": "^9.39.2",
+        "globals": "^16.5.0",
+        "jiti": "^2.6.1",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.50.0",
+        "vite-plugin-dts": "^4.5.4",
+        "vite-plugin-static-copy": "^3.1.4",
+        "vite-tsconfig-paths": "^6.0.1",
+        "vitest": "^4.0.15"
     }
 }

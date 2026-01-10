@@ -1,9 +1,9 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
-import { Root, Element } from "xast";
+import type { Root, Element } from "xast";
 import { x } from "xastscript";
-import { isElement } from "../../xast-utils";
-import { ensureChildrenArePairs } from "./utils";
+import { isElement } from "../../xast-utils.ts";
+import { ensureChildrenArePairs } from "./utils.ts";
 
 /**
  * Simplification steps from https://relaxng.org/spec-20011203.html
@@ -66,30 +66,34 @@ export const rule12: Plugin<void[], Root, Root> = function () {
                 case "choice":
                 case "group":
                 case "interleave":
-                    const wrapResult = ensureChildrenArePairs(node, node.name);
-                    if (wrapResult.shouldUnwrap) {
-                        // There is only one child. Its contents should replace itself
-                        console.warn("not implemented yet");
+                    {
+                        const wrapResult = ensureChildrenArePairs(node, node.name);
+                        if (wrapResult.shouldUnwrap) {
+                            node = node.children[0] as Element
+                        }
+                        return;
                     }
                 case "element":
-                    if (node.children.length < 2) {
-                        console.warn(
-                            `Expected <element ...> to have at least 2 children but found ${node.children.length}`
+                    {
+                        if (node.children.length < 2) {
+                            console.warn(
+                                `Expected <element ...> to have at least 2 children but found ${node.children.length}`
+                            );
+                            return;
+                        }
+                        if (node.children.length === 2) {
+                            return;
+                        }
+                        const remainingChildren = x(
+                            "group",
+                            node.children.slice(1)
                         );
-                        return;
+                        ensureChildrenArePairs(
+                            remainingChildren,
+                            remainingChildren.name
+                        );
+                        node.children = [node.children[0], remainingChildren];
                     }
-                    if (node.children.length === 2) {
-                        return;
-                    }
-                    const remainingChildren = x(
-                        "group",
-                        node.children.slice(1)
-                    );
-                    ensureChildrenArePairs(
-                        remainingChildren,
-                        remainingChildren.name
-                    );
-                    node.children = [node.children[0], remainingChildren];
             }
         });
     };

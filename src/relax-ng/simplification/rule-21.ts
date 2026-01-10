@@ -1,9 +1,9 @@
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
-import { Root } from "xast";
+import type { Root } from "xast";
 import { x } from "xastscript";
-import { elmMatcher, isElement } from "../../xast-utils";
-import { replaceIn } from "./utils";
+import { elmMatcher, isElement } from "../../xast-utils.ts";
+import { replaceIn } from "./utils.ts";
 
 /**
  * In this rule, the grammar is transformed so that an empty element does not occur as

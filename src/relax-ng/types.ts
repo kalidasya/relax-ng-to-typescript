@@ -4,7 +4,7 @@
 
 // Utility types to create element nodes with specific children
 export type _RecordOf<Attrs extends string[]> = {
-    [Key in Attrs[number]]: string;
+    [Key in Attrs[number]]: string; // eslint-disable-line no-unused-vars
 };
 export type RecordOf<Attrs = void[]> = Attrs extends string[]
     ? _RecordOf<Attrs>
@@ -112,7 +112,7 @@ export type NGNameClass =
     | NGElementNoAttrs<"anyName", NGExceptNameClass>
     | NGElementNoAttrs<"nsName", NGExceptNameClass>
     | NGElementNoAttrs<"choice", NGNameClass>;
-export interface NGExceptNameClass extends NGElement<"except", NGNameClass> {}
+export interface NGExceptNameClass extends NGElement<"except", NGNameClass> {}  // eslint-disable-line @typescript-eslint/no-empty-object-type
 
 export const NG_XML_NODES = new Set([
     "element",

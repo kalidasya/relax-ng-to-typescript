@@ -2,7 +2,7 @@
  * RELAX-NG types for the schema after simplification. Ported from https://relaxng.org/spec-20011203.html#element-pattern
  */
 
-import { Element as XMLElement, Text as XMLText, Root as XMLRoot } from "xast";
+import type { Element as XMLElement, Text as XMLText, Root as XMLRoot } from "xast";
 
 export interface NGSimpRoot extends Omit<XMLRoot, "children"> {
     children: [NGSimpGrammar];
