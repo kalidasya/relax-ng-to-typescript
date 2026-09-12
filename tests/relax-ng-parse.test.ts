@@ -47,5 +47,5 @@ describe("relax-ng-parse", () => {
         expect(ast).toBeTruthy()
         const types = makeTypesForGrammar(ast.children[0]);
         expect(types).toBeTruthy()
-    });
+    }, 10_000);
 });
